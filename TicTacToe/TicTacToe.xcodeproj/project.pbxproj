@@ -10,6 +10,8 @@
 		F6CA8C8E26B3CA2400C3FDC7 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = F6CA8C8D26B3CA2400C3FDC7 /* AppDelegate.m */; };
 		F6CA8C9926B3CA2400C3FDC7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F6CA8C9826B3CA2400C3FDC7 /* Assets.xcassets */; };
 		F6CA8C9F26B3CA2400C3FDC7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = F6CA8C9E26B3CA2400C3FDC7 /* main.m */; };
+		F6CA8CA726B3CB5A00C3FDC7 /* TTTViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F6CA8CA626B3CB5A00C3FDC7 /* TTTViewController.m */; };
+		F6CA8CAA26B3CBBE00C3FDC7 /* TTTView.m in Sources */ = {isa = PBXBuildFile; fileRef = F6CA8CA926B3CBBE00C3FDC7 /* TTTView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -19,6 +21,10 @@
 		F6CA8C9826B3CA2400C3FDC7 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		F6CA8C9D26B3CA2400C3FDC7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F6CA8C9E26B3CA2400C3FDC7 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		F6CA8CA526B3CB5A00C3FDC7 /* TTTViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TTTViewController.h; sourceTree = "<group>"; };
+		F6CA8CA626B3CB5A00C3FDC7 /* TTTViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TTTViewController.m; sourceTree = "<group>"; };
+		F6CA8CA826B3CBBE00C3FDC7 /* TTTView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TTTView.h; sourceTree = "<group>"; };
+		F6CA8CA926B3CBBE00C3FDC7 /* TTTView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TTTView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -53,6 +59,10 @@
 			children = (
 				F6CA8C8C26B3CA2400C3FDC7 /* AppDelegate.h */,
 				F6CA8C8D26B3CA2400C3FDC7 /* AppDelegate.m */,
+				F6CA8CA526B3CB5A00C3FDC7 /* TTTViewController.h */,
+				F6CA8CA626B3CB5A00C3FDC7 /* TTTViewController.m */,
+				F6CA8CA826B3CBBE00C3FDC7 /* TTTView.h */,
+				F6CA8CA926B3CBBE00C3FDC7 /* TTTView.m */,
 				F6CA8C9826B3CA2400C3FDC7 /* Assets.xcassets */,
 				F6CA8C9D26B3CA2400C3FDC7 /* Info.plist */,
 				F6CA8C9E26B3CA2400C3FDC7 /* main.m */,
@@ -127,8 +137,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F6CA8CA726B3CB5A00C3FDC7 /* TTTViewController.m in Sources */,
 				F6CA8C8E26B3CA2400C3FDC7 /* AppDelegate.m in Sources */,
 				F6CA8C9F26B3CA2400C3FDC7 /* main.m in Sources */,
+				F6CA8CAA26B3CBBE00C3FDC7 /* TTTView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
