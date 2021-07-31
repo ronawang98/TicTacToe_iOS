@@ -13,7 +13,7 @@
 - (void)drawPlayerPieces;
 - (void)drawCrossWithCenter:(CGPoint)center;
 - (void)drawCircleWithCenter:(CGPoint)center;
-- (void)drawWinner;
+- (void)drawResult;
 - (CGPoint)getPointAtPosition:(int)position;
 
 @end
@@ -24,7 +24,9 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
-        self.winner = -1;
+        self.result = NO_WIN;
+        self.backgroundColor = [UIColor blackColor];
+        self.clearsContextBeforeDrawing = YES;
     }
     return self;
 }
@@ -33,12 +35,13 @@
 {
     [self drawScore];
     [self drawPlayerPieces];
-    if (self.winner == 0 || self.winner == 1) {
-        [self drawWinner];
+    if ([@[@(PLAYER_1), @(PLAYER_2), @(TIE)] containsObject:@(self.result)]) {
+        [self drawResult];
     }
+    NSLog(@"view playerpos: %@", self.playerPositions);
 }
 
-- (void)drawWinner
+- (void)drawResult
 {
     CGFloat width = 200;
     CGRect textRect = CGRectMake(self.center.x - self.length/2, self.center.y - width/2, self.length, width);
@@ -46,7 +49,13 @@
     textStyle.alignment = NSTextAlignmentCenter;
 
     NSDictionary* textFontAttributes = @{NSFontAttributeName: [UIFont fontWithName: @"Helvetica" size: 36], NSForegroundColorAttributeName: UIColor.redColor, NSParagraphStyleAttributeName: textStyle};
-    NSString* message = [NSString stringWithFormat:@"Player %d wins!", self.winner+1];
+    
+    NSString *message;
+    if (self.result == TIE) {
+        message = [NSString stringWithFormat:@"Draw!"];
+    } else {
+        message = [NSString stringWithFormat:@"Player %d wins!", (int)self.result + 1];
+    }
     [message drawInRect:textRect withAttributes: textFontAttributes];
 }
 

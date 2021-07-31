@@ -9,6 +9,13 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+typedef enum ResultType {
+    NO_WIN = -1,
+    PLAYER_1 = 0,
+    PLAYER_2 = 1,
+    TIE = 2
+} ResultType;
+
 @interface TTTView : UIView
 
 // Length: 9
@@ -17,7 +24,7 @@ NS_ASSUME_NONNULL_BEGIN
 // If element is 2, player 2
 @property (nonatomic, strong) NSArray* playerPositions;
 @property (nonatomic) CGFloat length;
-@property (nonatomic) int winner;
+@property (nonatomic) ResultType result;
 
 @end
 

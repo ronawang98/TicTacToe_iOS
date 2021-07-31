@@ -16,6 +16,7 @@
 @property (nonatomic, strong) TTTView* TTTView;
 @property (nonatomic) bool gameOngoing;
 @property (nonatomic, strong) UIButton* resetButton;
+@property (nonatomic) int numTurns;
 
 - (int)detectWin;
 - (void)finishGame;
@@ -31,6 +32,7 @@
         self.positions = [[NSMutableArray alloc] initWithArray:@[@-1, @-1, @-1, @-1, @-1, @-1, @-1, @-1, @-1]];
         self.currentPlayer = 0;
         self.gameOngoing = YES;
+        self.numTurns = 0;
     }
     return self;
 }
@@ -73,15 +75,21 @@
             if (CGRectContainsPoint(currRect, point)) {
                 // Convert 2D coordinates to linear position
                 int linearPos = i + (j * 3);
+                // If a piece is already in square
                 if ([self.positions[linearPos] integerValue] != -1) {
                     return;
+                }
+                self.numTurns++;
+                if (self.numTurns == 9) {
+                    self.TTTView.result = TIE;
+                    [self finishGame];
                 }
                 self.positions[linearPos] = @(self.currentPlayer);
                 // Update current player: 1 -> abs(0) -> 0, 0 -> abs(-1) -> 1
                 self.currentPlayer = ABS(self.currentPlayer - 1);
                 int winner = [self detectWin];
                 if (winner == 1 || winner == 0) {
-                    self.TTTView.winner = winner;
+                    self.TTTView.result = winner;
                     [self finishGame];
                 }
                 NSLog(@"WINNER: %d", winner);
@@ -158,9 +166,14 @@
     self.positions = [[NSMutableArray alloc] initWithArray:@[@-1, @-1, @-1, @-1, @-1, @-1, @-1, @-1, @-1]];
     self.currentPlayer = 0;
     self.gameOngoing = YES;
+    self.numTurns = 0;
     [self.resetButton removeFromSuperview];
     
     // TODO: Reset view
+    self.TTTView.playerPositions = self.positions;
+    self.TTTView.result = NO_WIN;
+    NSLog(@"player positions: %@", self.TTTView.playerPositions);
+    [self.view setNeedsDisplay];
 }
 
 
