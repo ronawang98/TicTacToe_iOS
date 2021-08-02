@@ -18,7 +18,7 @@
 @property (nonatomic, strong) UIButton* resetButton;
 @property (nonatomic) int numTurns;
 
-- (int)detectWin;
+- (int)detectWinWithLastPosition:(int)linearPos;
 - (void)finishGame;
 
 @end
@@ -29,7 +29,10 @@
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-        self.positions = [[NSMutableArray alloc] initWithArray:@[@-1, @-1, @-1, @-1, @-1, @-1, @-1, @-1, @-1]];
+        self.positions = [NSMutableArray array];
+        for (int i = 0; i < 9; i++) {
+            [self.positions addObject:@-1];
+        }
         self.currentPlayer = 0;
         self.gameOngoing = YES;
         self.numTurns = 0;
@@ -84,11 +87,11 @@
                     self.TTTView.result = TIE;
                     [self finishGame];
                 }
-                self.positions[linearPos] = @(self.currentPlayer);
+                self.positions[linearPos] = [NSNumber numberWithInt:self.currentPlayer];
                 // Update current player: 1 -> abs(0) -> 0, 0 -> abs(-1) -> 1
                 self.currentPlayer = ABS(self.currentPlayer - 1);
-                int winner = [self detectWin];
-                if (winner == 1 || winner == 0) {
+                ResultType winner = [self detectWinWithLastPosition:linearPos];
+                if (winner == PLAYER_1 || winner == PLAYER_2) {
                     self.TTTView.result = winner;
                     [self finishGame];
                 }
@@ -100,53 +103,43 @@
     }
 }
 
-- (int)detectWin
+- (int)detectWinWithLastPosition:(int)linearPos
 {
-    // TODO: Find a more optimal way to detect win
+    // TODO: Find a more optimal way to detect win: "building" towards wins?
     
-    // Diagonal win
-    int a = (int)[self.positions[0] integerValue];
-    int b = (int)[self.positions[4] integerValue];
-    int c = (int)[self.positions[8] integerValue];
-    int d = (int)[self.positions[2] integerValue];
-    int e = (int)[self.positions[6] integerValue];
-    if (a != -1 && a == b && b == c) {
-        NSLog(@"desc diagonal hasWon");
-        NSLog(@"%d", a);
-        return a;
+    
+    // TODO: Fix this bug - review difference between NSInteger, NSNumber, int?
+    if (![self.positions[linearPos] isEqual:@0] && ![self.positions[linearPos] isEqual:@1]) {
+        return -1;
     }
-    if (d != -1 && b == d && d == e) {
-        NSLog(@"desc diagonal hasWon");
-        NSLog(@"%d", d);
-        return d;
+    // Horizontal check
+    int h = floor(linearPos/3);
+    if (self.positions[h] == self.positions[h+1] && self.positions[h] == self.positions[h+2]) {
+        NSLog(@"horizontal win for player %@", self.positions[h]);
+        return (int)[self.positions[h] integerValue];
     }
     
-    for (int i = 0; i < 3; i++) {
-        // Horizontal win
-        if ([self.positions[i*3] integerValue] != -1) {
-            int a = (int)[self.positions[i*3] integerValue];
-            int b = (int)[self.positions[i*3+1] integerValue];
-            int c = (int)[self.positions[i*3+2] integerValue];
-            if (a == b && b == c) {
-                NSLog(@"horizontal hasWon");
-                NSLog(@"%d", i);
-                return a;
-            }
-        }
-        
-        // Vertical win
-        if ([self.positions[i] integerValue] != -1) {
-            int a = (int)[self.positions[i] integerValue];
-            int b = (int)[self.positions[i+3] integerValue];
-            int c = (int)[self.positions[i+6] integerValue];
-            if (a == b && b == c) {
-                NSLog(@"vertical hasWon");
-                NSLog(@"%d", i);
-
-                return a;
-            }
+    // Vertical check
+    int v = linearPos % 3;
+    if (self.positions[v] == self.positions[v+3] && self.positions[v] == self.positions[v+6]) {
+        NSLog(@"horizontal win for player %@", self.positions[v]);
+        return (int)[self.positions[v] integerValue];
+    }
+    
+    // Descending diagonal (0, 4, 8)
+    if (linearPos % 4 == 0 && self.positions[0] == self.positions[4] && self.positions[0] == self.positions[8]) {
+        NSLog(@"descending diagonal win for player %@", self.positions[0]);
+        return (int)[self.positions[0] integerValue];
+    }
+    
+    // Ascending diagonal (2, 4, 6)
+    if (linearPos % 2 == 0 && linearPos % 8 != 0) {
+        if (self.positions[2] == self.positions[4] && self.positions[4] == self.positions[6]) {
+            NSLog(@"ascending diagonal win for player %@", self.positions[0]);
+            return (int)[self.positions[2] integerValue];
         }
     }
+    
     return -1;
 }
 
@@ -163,13 +156,15 @@
 
 - (void)resetGame
 {
-    self.positions = [[NSMutableArray alloc] initWithArray:@[@-1, @-1, @-1, @-1, @-1, @-1, @-1, @-1, @-1]];
+    [self.positions removeAllObjects];
+    for (int i = 0; i < 9; i++) {
+        [self.positions addObject:@-1];
+    }
     self.currentPlayer = 0;
     self.gameOngoing = YES;
     self.numTurns = 0;
     [self.resetButton removeFromSuperview];
     
-    // TODO: Reset view
     self.TTTView.playerPositions = self.positions;
     self.TTTView.result = NO_WIN;
     NSLog(@"player positions: %@", self.TTTView.playerPositions);
