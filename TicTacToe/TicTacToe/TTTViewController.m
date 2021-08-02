@@ -108,12 +108,13 @@
     // TODO: Find a more optimal way to detect win: "building" towards wins?
     
     
-    // TODO: Fix this bug - review difference between NSInteger, NSNumber, int?
-    if (![self.positions[linearPos] isEqual:@0] && ![self.positions[linearPos] isEqual:@1]) {
+    // TODO: Review difference between NSInteger, NSNumber, int
+    if ([self.positions[linearPos] integerValue] != 0 && [self.positions[linearPos] integerValue] != 1) {
         return -1;
     }
+    
     // Horizontal check
-    int h = floor(linearPos/3);
+    int h = floor(linearPos/3) * 3;
     if (self.positions[h] == self.positions[h+1] && self.positions[h] == self.positions[h+2]) {
         NSLog(@"horizontal win for player %@", self.positions[h]);
         return (int)[self.positions[h] integerValue];
